@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import GlobalStyle from './style'
 import Iconfont from './statics/iconfont/iconfont'
 import Header from './common/Header'
+import { Provider } from 'react-redux'
+import store from './store'
 
 class App extends Component {
   render () {
@@ -9,7 +11,9 @@ class App extends Component {
       <Fragment>
         <GlobalStyle />
         <Iconfont />
-        <Header />
+        <Provider store={store}>
+          <Header />
+        </Provider>
       </Fragment>
     )
   }

@@ -8,3 +8,5 @@
 - styled-components
 - redux
 - react-redux
+- immutable.js
+- redux-immutable

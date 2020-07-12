@@ -15,17 +15,10 @@ import {
 	Button
 } from './style'
 import { CSSTransition } from 'react-transition-group'
+import { connect } from 'react-redux'
+import { actionCreators } from './store'
 
 class Header extends Component {
-
-  constructor (props) {
-    super(props)
-    this.handleInputFocus = this.handleInputFocus.bind(this)
-    this.handleInputBlur = this.handleInputBlur.bind(this)
-    this.state = {
-      focused: false
-    }
-  }
 
   render () {
     return (
@@ -41,17 +34,17 @@ class Header extends Component {
 					</NavItem>
 					<SearchWrapper>
 						<CSSTransition
-							in={this.state.focused}
+							in={this.props.focused}
 							timeout={200}
 							classNames="slide"
 						>
 							<NavSearch
-								className={this.state.focused ? 'focused': ''}
-								onFocus={this.handleInputFocus}
-								onBlur={this.handleInputBlur}
+								className={this.props.focused ? 'focused': ''}
+								onFocus={this.props.handleInputFocus}
+								onBlur={this.props.handleInputBlur}
 							></NavSearch>
 						</CSSTransition>
-						<i className={this.state.focused ? 'focused iconfont zoom': 'iconfont zoom'}>
+						<i className={this.props.focused ? 'focused iconfont zoom': 'iconfont zoom'}>
 							&#xe614;
 						</i>
 					</SearchWrapper>
@@ -67,18 +60,26 @@ class Header extends Component {
     )
   }
 
-  handleInputFocus () {
-    this.setState(() => ({
-      focused: true
-    }))
-  }
-
-  handleInputBlur () {
-    this.setState(() => ({
-      focused: false
-    }))
-  }
-
 }
 
-export default Header
+const mapStateToProps = state => {
+	return {
+		// focused: state.header.focused
+		// focused: state.header.get('focused')
+		// focused: state.get('header').get('focused')
+		focused: state.getIn(['header', 'focused'])
+	}
+}
+
+const mapDispatchToProps = dispatch => {
+	return {
+		handleInputFocus: () => {
+			dispatch(actionCreators.getInputFocus())
+		},
+		handleInputBlur: () => {
+			dispatch(actionCreators.getInputBlur())
+		}
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)
