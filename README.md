@@ -10,3 +10,6 @@
 - react-redux
 - immutable.js
 - redux-immutable
+- redux-thunk
+- mockjs
+- axios

@@ -6,21 +6,35 @@ import { fromJS } from 'immutable'
 // }
 
 const defaultState = fromJS({
-  focused: false
+  focused: false,
+  list: [],
+  mouseIn: false,
+  page: 1,
+  totalPage: 1
 })
 
 export default (state = defaultState, action) => {
-  if (action.type === constants.INPUT_FOCUS) {
-    // const newState = JSON.parse(JSON.stringify(state))
-    // newState.focused = true
-    // return newState
-    return state.set('focused', true)
+
+  switch (action.type) {
+    case constants.INPUT_FOCUS:
+      return state.set('focused', true)
+    case constants.INPUT_BLUR:
+      return state.set('focused', false)
+    case constants.INIT_LIST:
+      // return state.set('list', action.data)
+      return state.merge({
+        'list': action.data,
+        'totalPage': action.totalPage
+      })
+    case constants.MOUSE_ENTER:
+      return state.set('mouseIn', action.value)
+    case constants.MOUSE_LEAVE:
+      return state.set('mouseIn', action.value)
+    case constants.CHANGE_LIST:
+      return state.set('page', action.page)
+    default:
+      return state
   }
-  if (action.type === constants.INPUT_BLUR) {
-    // const newState = JSON.parse(JSON.stringify(state))
-    // newState.focused = false
-    // return newState
-    return state.set('focused', false)
-  }
-  return state
+
+  
 }

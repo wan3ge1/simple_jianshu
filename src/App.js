@@ -4,6 +4,7 @@ import Iconfont from './statics/iconfont/iconfont'
 import Header from './common/Header'
 import { Provider } from 'react-redux'
 import store from './store'
+import './mock/TestMock'
 
 class App extends Component {
   render () {
