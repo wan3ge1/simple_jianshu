@@ -14,3 +14,4 @@
 - mockjs
 - axios
 - react-router-dom
+- react-loadable
