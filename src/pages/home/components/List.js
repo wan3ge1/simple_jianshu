@@ -1,19 +1,20 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
   ListInfo,
   ListItem,
   LoadMore
 } from '../style'
 import { connect } from 'react-redux'
+import { actionCreators } from '../store'
 
-class List extends Component {
+class List extends PureComponent {
   render () {
     return (
       <div>
         {
-          this.props.articleList.map(item => {
+          this.props.articleList.map((item, index) => {
             return (
-              <ListItem key={item.get('id')}>
+              <ListItem key={index}>
                 <img alt='' className='pic' src={item.get('imgUrl')} />
                 <ListInfo>
                   <h3 className='title'>{item.get('title')}</h3>
@@ -23,7 +24,7 @@ class List extends Component {
             )
           })
         }
-        <LoadMore>更多文字</LoadMore>
+        <LoadMore onClick={this.props.handleLoadMore}>更多文字</LoadMore>
 			</div>
     )
   }
@@ -35,4 +36,12 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, null)(List)
+const mapDispatchToProps = dispatch => {
+  return {
+    handleLoadMore () {
+      dispatch(actionCreators.getLoadMoreSync())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(List)

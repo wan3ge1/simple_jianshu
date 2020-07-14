@@ -5,6 +5,7 @@ import List from './components/List'
 import Recommend from './components/Recommend'
 import Writer from './components/Writer'
 import { actionCreators } from './store'
+import { BackTop } from './style'
 
 import { 
 	HomeWrapper,
@@ -16,6 +17,11 @@ class Home extends Component {
 
 	componentDidMount () {
 		this.props.handleInitInfo()
+		window.addEventListener('scroll', this.props.handleScroll)
+	}
+
+	componentWillUnmount () {
+		window.removeEventListener('scroll', this.props.handleScroll)
 	}
 
   render () {
@@ -34,15 +40,27 @@ class Home extends Component {
 					<Recommend />
 					<Writer />
 				</HomeRight>
+				{this.props.showScroll ? <BackTop onClick={() => {window.scrollTo(0, 0)}}>回到顶部</BackTop> : null}
 			</HomeWrapper>
     )
   }
 }
 
+const mapStateToProps = state => {
+	return {
+		showScroll: state.getIn(['home', 'showScroll'])
+	}
+}
+
 const mapDispatchToProps = dispatch => ({
 	handleInitInfo () {
 		dispatch(actionCreators.getInitInfoSync())
+		
+	},
+	handleScroll () {
+		let value = document.documentElement.scrollTop > 150 ? true : false
+		dispatch(actionCreators.getToggleScroll(value))
 	}
 })
 
-export default connect(null, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
